@@ -5,6 +5,7 @@ public class Song
 	public Song(File file)
 	{
 		//TODO LOL
+		//no, seriously, we should do this 
 	}
 	
 	public Integer[] getData()
