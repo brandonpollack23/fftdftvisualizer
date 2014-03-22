@@ -1,6 +1,7 @@
 public class Song
 {
-	private final Integer[] data;
+	private final int[] data;
+	private final float SAMPLING_FREQUENCY;
 	
 	public Song(File file)
 	{
@@ -8,8 +9,13 @@ public class Song
 		//no, seriously, we should do this 
 	}
 	
-	public Integer[] getData()
+	public int[] getData()
 	{
 		return data;
+	}
+
+	public float getSamplingFreq()
+	{
+		return SAMPLING_FREQUENCY;
 	}
 }
