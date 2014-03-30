@@ -14,6 +14,7 @@ public class SequentialDiscreteFT extends Transformer
 		for(int i = 0; i < datas.length; i += samplingFreq/REFRESH_RATE)
 		{
 			queue.add(transform(i));
+			queue.notify();
 		}
 	}
 
