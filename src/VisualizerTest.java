@@ -2,20 +2,8 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 // Pseudo-thread.
-public class VisualizerTest extends Thread
+public class VisualizerTest
 {
-	Visualizer visualizer = null;
-	
-	public VisualizerTest(Queue<double[]> amplitudes, int N)
-	{
-		visualizer = new Visualizer(amplitudes, N);
-	}
-	
-	public void run()
-	{
-		visualizer.VisualizerMain();
-	}
-
 	
 	// Pseudo-main.
 	public static void main(String[] args)
@@ -25,7 +13,8 @@ public class VisualizerTest extends Thread
 		Queue<double[]> amplitudes = new LinkedList<double[]>();
 		
 		// Start visualizer thread.
-		VisualizerTest thread = new VisualizerTest(amplitudes, N);
+		Visualizer visualizer = new Visualizer(amplitudes, N);
+		Thread thread = new Thread(visualizer); 
 		thread.start();
 		
 		// Pseudo-transformer.

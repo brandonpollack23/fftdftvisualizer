@@ -6,7 +6,7 @@ import java.awt.Image;
 import java.util.Queue;
 
 @SuppressWarnings("serial")
-public class Visualizer extends Frame {
+public class Visualizer extends Frame implements Runnable {
 	
 	// Graphics constants.
 	public final short DISPLAY_START_X = 12;
@@ -79,10 +79,12 @@ public class Visualizer extends Frame {
 	
 	
 	// Visualizer Main.
-	public void VisualizerMain()
+	@Override
+	public void run()
 	{
 		while(true)
 		{
+			// Lock access to queue.
 			synchronized(amplitudes)
 			{
 				while(amplitudes.isEmpty())
@@ -91,6 +93,7 @@ public class Visualizer extends Frame {
 					{
 						long start = System.currentTimeMillis();
 						amplitudes.wait(2*TIME_OUT);
+						// Self-terminate mechanism.
 						if(System.currentTimeMillis() - start > TIME_OUT)
 						{
 							this.dispose();
@@ -101,9 +104,14 @@ public class Visualizer extends Frame {
 					{
 					}
 				}
-				presentamplitudes = amplitudes.poll();
-				repaint();				
+				// Obtain the preset array of amplitudes.
+				presentamplitudes = amplitudes.poll();					
 			}
+			
+			// Repaint the amplitude bars.
+			repaint();
+			
+			// Sleep.
 			try 
 			{
 				Thread.sleep(ONE_SIXTIETH_SECOND);
