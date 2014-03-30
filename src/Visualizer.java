@@ -3,19 +3,22 @@ import java.awt.Component;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.util.LinkedList;
 import java.util.Queue;
 
 @SuppressWarnings("serial")
 public class Visualizer extends Frame {
 	
-	// Constants.
+	// Graphics constants.
 	public final short DISPLAY_START_X = 12;
 	public final short DISPLAY_START_Y = 550;
-	public final short WINDOW_WIDTH = 1048;
+	public final short WINDOW_WIDTH;
 	public final short WINDOW_HEIGHT = 600;
 	
-	// States.
+	// Time constants.
+	public final short ONE_SIXTIETH_SECOND = 17;
+	public final short TIME_OUT = 30;
+	
+	// States and attributes.
 	private final int N;
 	private Queue<int[]> amplitudes = null;
 	int[] presentamplitudes = null;
@@ -65,6 +68,8 @@ public class Visualizer extends Frame {
 		this.amplitudes = amplitudes;
 		this.N = N;
 		
+		WINDOW_WIDTH = (short) (2*DISPLAY_START_X + this.N);
+		
 		setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 		setVisible(true);
 		setBackground(Color.BLACK);
@@ -73,36 +78,39 @@ public class Visualizer extends Frame {
 	}
 	
 	
-	// Pseudo-main.
-	public static void main(String[] args)
-	{	
-		int N = 1024;
-		Queue<int[]> amplitudes = new LinkedList<int[]>();
-		
-		// Fill up the queue with sets of random amplitudes.
-		for(int i=0; i<200; i++)
+	// Visualizer Main.
+	public void VisualizerMain()
+	{
+		while(true)
 		{
-			int[] array = new int[N];
-			for(int j=0; j<N; j++)
+			synchronized(amplitudes)
 			{
-				array[j] = (int)(Math.random()*401);
+				while(amplitudes.isEmpty())
+				{
+					try 
+					{
+						long start = System.currentTimeMillis();
+						amplitudes.wait(2*TIME_OUT);
+						if(System.currentTimeMillis() - start > TIME_OUT)
+						{
+							this.dispose();
+							return;
+						}
+					} 
+					catch(InterruptedException e)
+					{
+					}
+				}
+				presentamplitudes = amplitudes.poll();
+				repaint();				
 			}
-			amplitudes.add(array);
-		}
-		
-		// Test the visualizers.
-		Visualizer visualizer = new Visualizer(amplitudes, N);
-
-		while(!amplitudes.isEmpty())
-		{
-			visualizer.presentamplitudes = amplitudes.poll();
-			visualizer.repaint();
-			try {
-				Thread.sleep(17);
+			try 
+			{
+				Thread.sleep(ONE_SIXTIETH_SECOND);
 			} 
-			catch (InterruptedException e) {}
-		}
-	
-		visualizer.dispose();	
-	}	
+			catch (InterruptedException e) 
+			{
+			}
+		}	
+	}
 }
