@@ -1,7 +1,9 @@
+import java.io.File;
+
 public class Song
 {
 	private final int[] data;
-	private final float SAMPLING_FREQUENCY;
+	private final int SAMPLING_FREQUENCY;
 	
 	public Song(File file)
 	{
@@ -14,7 +16,7 @@ public class Song
 		return data;
 	}
 
-	public float getSamplingFreq()
+	public int getSamplingFreq()
 	{
 		return SAMPLING_FREQUENCY;
 	}
