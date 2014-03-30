@@ -21,9 +21,9 @@ public class SequentialDiscreteFT extends Transformer
 	@Override
 	public double[] transform(int startPos)
 	{
-		double[] result = new double[datas.length];
-		double[] imag = new double[datas.length];
-		double[] real = new double[datas.length];
+		double[] result = new double[numBins];
+		double[] imag = new double[numBins];
+		double[] real = new double[numBins];
 		
 		for(int i = startPos; i < numBins; i++)
 		{
