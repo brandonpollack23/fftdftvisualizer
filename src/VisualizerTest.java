@@ -6,7 +6,7 @@ public class VisualizerTest extends Thread
 {
 	Visualizer visualizer = null;
 	
-	public VisualizerTest(Queue<int[]> amplitudes, int N)
+	public VisualizerTest(Queue<double[]> amplitudes, int N)
 	{
 		visualizer = new Visualizer(amplitudes, N);
 	}
@@ -22,7 +22,7 @@ public class VisualizerTest extends Thread
 	{	
 		// Main global variables.
 		int N = 1024;
-		Queue<int[]> amplitudes = new LinkedList<int[]>();
+		Queue<double[]> amplitudes = new LinkedList<double[]>();
 		
 		// Start visualizer thread.
 		VisualizerTest thread = new VisualizerTest(amplitudes, N);
@@ -31,10 +31,10 @@ public class VisualizerTest extends Thread
 		// Pseudo-transformer.
 		for(int i=0; i<200; i++)
 		{
-			int[] array = new int[N];
+			double[] array = new double[N];
 			for(int j=0; j<N; j++)
 			{
-				array[j] = (int)(Math.random()*401);
+				array[j] = Math.random()*401;
 			}
 			synchronized(amplitudes)
 			{

@@ -20,8 +20,8 @@ public class Visualizer extends Frame {
 	
 	// States and attributes.
 	private final int N;
-	private Queue<int[]> amplitudes = null;
-	int[] presentamplitudes = null;
+	private Queue<double[]> amplitudes = null;
+	double[] presentamplitudes = null;
 	
 	
 	// Component used to paint the amplitude bars.
@@ -42,7 +42,7 @@ public class Visualizer extends Frame {
 				imagegraphics.setColor(Color.ORANGE);
 				for(int i=0; i<presentamplitudes.length; i++)
 				{
-					imagegraphics.drawLine(i + DISPLAY_START_X, DISPLAY_START_Y - presentamplitudes[i], i + DISPLAY_START_X, DISPLAY_START_Y);
+					imagegraphics.drawLine(i + DISPLAY_START_X, DISPLAY_START_Y - (int)presentamplitudes[i], i + DISPLAY_START_X, DISPLAY_START_Y);
 				}	
 			}
 			
@@ -61,7 +61,7 @@ public class Visualizer extends Frame {
 	
 	
 	// Constructor.
-	public Visualizer(Queue<int[]> amplitudes ,int N)
+	public Visualizer(Queue<double[]> amplitudes ,int N)
 	{
 		super("Visualizer");
 		
