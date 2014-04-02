@@ -1,0 +1,5 @@
+src/WavFile/
+ This code is not our own, it was downloaded from here:
+ http://www.labbookpages.co.uk/audio/javaWavFiles.html
+ The original sources are at src/WavFile.tar.gz, we have only modified each
+ class to be in the package "WavFile"

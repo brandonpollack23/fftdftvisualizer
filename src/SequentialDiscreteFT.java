@@ -3,7 +3,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class SequentialDiscreteFT extends Transformer
 {
-	public SequentialDiscreteFT(ConcurrentLinkedQueue<double[]> queue, Song song, int numBins)
+	public SequentialDiscreteFT(ConcurrentLinkedQueue<double[]> queue, Song song, int numBins) throws Exception
 	{
 		super(queue, song, numBins);
 	}

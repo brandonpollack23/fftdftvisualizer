@@ -4,7 +4,7 @@ import java.util.Queue;
 public class SequentialFFT extends Transformer
 {
 
-	public SequentialFFT(Queue<double[]> queue, Song song, int numBins)
+	public SequentialFFT(Queue<double[]> queue, Song song, int numBins) throws Exception
 	{
 		super(queue, song, numBins);
 	}

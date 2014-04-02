@@ -10,7 +10,7 @@ public abstract class Transformer implements Runnable
 	int samplingFreq;
 	final int REFRESH_RATE = 60;
 	
-	public Transformer(Queue<double[]> queue, Song song, int numBins)
+	public Transformer(Queue<double[]> queue, Song song, int numBins) throws Exception
 	{
 		this.queue = queue;
 		this.datas = song.getData();
