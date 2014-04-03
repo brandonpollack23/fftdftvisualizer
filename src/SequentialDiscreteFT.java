@@ -1,3 +1,5 @@
+// TODO: Can be simplified due to symmetry from inputs having only a real component 
+
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 
@@ -11,7 +13,7 @@ public class SequentialDiscreteFT extends Transformer
 	@Override
 	public void run()
 	{
-		for(int i = 0; i < datas.length; i += samplingFreq/REFRESH_RATE)
+		for (int i = 0; i < datas.length; i += samplingFreq / REFRESH_RATE)
 		{
 			queue.add(transform(i));
 			queue.notify();
@@ -22,19 +24,21 @@ public class SequentialDiscreteFT extends Transformer
 	public double[] transform(int startPos)
 	{
 		double[] result = new double[numBins];
-		double[] imag = new double[numBins];
-		double[] real = new double[numBins];
 		
-		for(int i = startPos; i < numBins; i++)
+		for (int i = 0; i < numBins; i++)
 		{
-			for(int j = startPos; j < numBins; j++)
+			double real = 0;
+			double imag = 0;
+
+			for (int j = 0; j < numBins; j++)
 			{
-				real[i] += datas[j]*Math.cos(2*Math.PI*i*j/numBins);
-				imag[i] += datas[j]*Math.sin(2*Math.PI*i*j/numBins);
+				real += datas[startPos + j] * Math.cos(2 * Math.PI * i * j / numBins);
+				imag += -datas[startPos + j] * Math.sin(2 * Math.PI * i * j / numBins);
 			}
-			real[i] *= (2/numBins);
-			imag[i] *= -(2/numBins);
-			result[i] = Math.pow(Math.pow(real[i],(double)2) + Math.pow(imag[i],2),(double).5);
+			//TODO: What was this for again? It's not part of the DFT on Wikipedia
+			//real[i] *= (2/numBins);
+			//imag[i] *= -(2/numBins);
+			result[i] = Math.pow(Math.pow(real, (double)2) + Math.pow(imag, 2), (double).5);
 		}
 		
 		return result;
