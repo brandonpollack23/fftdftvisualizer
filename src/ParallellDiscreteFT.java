@@ -1,4 +1,4 @@
-import java.util.concurrent.ConcurrentLinkedQueue;
+/*import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class ParallellDiscreteFT extends SequentialDiscreteFT
 {
@@ -13,3 +13,6 @@ public class ParallellDiscreteFT extends SequentialDiscreteFT
 
 	}
 }
+*/
+
+//depricated

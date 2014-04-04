@@ -6,7 +6,6 @@ import java.util.concurrent.locks.*;
 
 public class SequentialDiscreteFT extends Transformer
 {
-<<<<<<< HEAD
 	private boolean discreteParallel;
 	private int startPos, endPos;
 	private Song song;
@@ -27,19 +26,13 @@ public class SequentialDiscreteFT extends Transformer
 		this.startPos = startPos;
 		this.endPos = endPos;
 		this.song = song;
-=======
-	public SequentialDiscreteFT(ConcurrentLinkedQueue<double[]> queue, Song song, int numBins) throws Exception
-	{
-		super(queue, song, numBins);
->>>>>>> parent of 73aeb3e... Depricated the ParallelDFT class
 	}
 
 	@Override
 	public void run()
 	{
-		for (int i = 0; i < datas.length; i += samplingFreq / REFRESH_RATE)
+		if(!discreteParallel)
 		{
-<<<<<<< HEAD
 			for (int i = startPos; i < endPos; i += samplingFreq / REFRESH_RATE)
 			{
 				//TODO
@@ -48,9 +41,7 @@ public class SequentialDiscreteFT extends Transformer
 				
 				ReentrantLock lock = new ReentrantLock();
 				
-				Condition c0 = lock.newCondition();
-				
-				
+				Condition c0 = lock.newCondition();			
 				
 				try
 				{
@@ -62,7 +53,7 @@ public class SequentialDiscreteFT extends Transformer
 					//hey was the last guy's i in that for loop generating below (which we can pass to the queue) 
 					//one less than mine? if it is, stop awaiting
 					//I dont want to change our queue without discussing it with you guys first though
-					while() c0.await();
+					while(true) c0.await();
 				}
 				catch(Exception e)
 				{
@@ -96,10 +87,6 @@ public class SequentialDiscreteFT extends Transformer
 				
 				thread.start();
 			}
-=======
-			queue.add(transform(i));
-			queue.notify();
->>>>>>> parent of 73aeb3e... Depricated the ParallelDFT class
 		}
 	}
 
@@ -118,9 +105,11 @@ public class SequentialDiscreteFT extends Transformer
 				real += datas[startPos + j] * Math.cos(2 * Math.PI * i * j / numBins);
 				imag += -datas[startPos + j] * Math.sin(2 * Math.PI * i * j / numBins);
 			}
-			//TODO: What was this for again? It's not part of the DFT on Wikipedia
-			//real[i] *= (2/numBins);
-			//imag[i] *= -(2/numBins);
+			real *= (2/numBins);
+			imag *= -(2/numBins);
+			
+			//http://www.analog.com/static/imported-files/tech_docs/dsp_book_Ch31.pdf
+			//wikipedia has the complex formula that's why
 			result[i] = Math.pow(Math.pow(real, (double)2) + Math.pow(imag, 2), (double).5);
 		}
 		
