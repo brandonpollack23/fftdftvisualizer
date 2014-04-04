@@ -4,13 +4,13 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public abstract class Transformer implements Runnable
 {
-	Queue<double[]> queue;
+	ConcurrentLinkedQueue<double[]> queue;
 	int[] datas;
 	int numBins;
 	int samplingFreq;
 	final int REFRESH_RATE = 60;
 	
-	public Transformer(Queue<double[]> queue, Song song, int numBins) throws Exception
+	public Transformer(ConcurrentLinkedQueue<double[]> queue, Song song, int numBins) throws Exception
 	{
 		this.queue = queue;
 		this.datas = song.getData();
