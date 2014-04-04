@@ -105,11 +105,13 @@ public class SequentialDiscreteFT extends Transformer
 				real += datas[startPos + j] * Math.cos(2 * Math.PI * i * j / numBins);
 				imag += -datas[startPos + j] * Math.sin(2 * Math.PI * i * j / numBins);
 			}
-			real *= (2/numBins);
+			/*real *= (2/numBins);
 			imag *= -(2/numBins);
 			
 			//http://www.analog.com/static/imported-files/tech_docs/dsp_book_Ch31.pdf
-			//wikipedia has the complex formula that's why
+			//wikipedia has the complex formula that's why*/
+			
+			//actually not needed
 			result[i] = Math.pow(Math.pow(real, (double)2) + Math.pow(imag, 2), (double).5);
 		}
 		
