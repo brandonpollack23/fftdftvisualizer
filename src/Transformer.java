@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -5,15 +6,15 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public abstract class Transformer implements Runnable
 {
-	ConcurrentLinkedDeque<double[]> queue;
+	ArrayList<double[]> queue;
 	int[] datas;
 	int numBins;
 	int samplingFreq;
 	final int REFRESH_RATE = 60;
 	
-	public Transformer(ConcurrentLinkedDeque<double[]> queue, Song song, int numBins) throws Exception
+	public Transformer(ArrayList<double[]> queue2, Song song, int numBins) throws Exception
 	{
-		this.queue = queue;
+		this.queue = queue2;
 		this.datas = song.getData();
 		this.numBins = numBins;
 		this.samplingFreq = song.getSamplingFreq();
