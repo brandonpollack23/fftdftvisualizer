@@ -1,70 +1,43 @@
-import java.util.ArrayList;
+import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
 
 // TODO: Can be simplified due to symmetry from inputs having only a real component 
 
 public class SequentialDiscreteFT extends Transformer
 {
-	private boolean discreteParallel;
-	private int startPos, endPos;
-	private Song song;
+	protected int startPos; //this should be 0 for sequential always, however parallel utilizes it
+	protected Song song;
+	private int incSize; //this variable keeps track of the amout to increment for the next frame THIS thread renders (whether we are discrete or parallel)
+	//in a purely sequential transform, this is equivalent to frame size
+	//when we are operating in parallel, this is equivalent to lenght of data divided by number of threads
 	
-	public SequentialDiscreteFT(ArrayList<double[]> queue, Song song, int numBins, boolean discreteParallel) throws Exception
+	public SequentialDiscreteFT(ConcurrentLinkedDeque<double[]> q, Song song, int startPos, int numBins, int incSize) throws Exception
 	{
-		super(queue, song, numBins);
-		this.discreteParallel = discreteParallel;
-		this.startPos = 0;
-		this.endPos = datas.length;
-		this.song = song;
-	}
-	
-	public SequentialDiscreteFT(ArrayList<double[]> queue, Song song, int numBins, int startPos, int endPos, boolean discreteParallel) throws Exception
-	{
-		super(queue, song, numBins);
-		this.discreteParallel = discreteParallel; //false means do this discrete, true means do in parallel
+		super(q, song, numBins);
 		this.startPos = startPos;
-		this.endPos = endPos;
 		this.song = song;
+		this.incSize = incSize;
 	}
 
 	@Override
 	public void run()
 	{
-		if(!discreteParallel)
+		for (int i = startPos; i < datas.length; i += incSize)
 		{
-			for (int i = startPos; i < endPos; i += samplingFreq / REFRESH_RATE)
-			{		
-				queue.add(i,transform(i));
-				queue.notify();
-			}
-		}
-		else
-		{
-			final int NUM_PROCS = Runtime.getRuntime().availableProcessors();
+			double[] data;
 			
-			for(int i = 0; i < NUM_PROCS; i++)
-			{
-				Thread thread = null;
-				
-				int dividedSize = datas.length / NUM_PROCS;
-				int startPos = i * dividedSize;
-				
-				try
-				{
-					thread = new Thread(new SequentialDiscreteFT(queue, song, numBins, startPos, startPos + dividedSize, false));
-				} 
-				catch (Exception e)
-				{
-					//UH OH!!!
-				}
-				
-				thread.start();
-			}
+			data = transform(i);			
+			
+			queue.add(data); //maybe have a length check here
 		}
 	}
 
 	@Override
 	public double[] transform(int startPos)
 	{
+		//http://www.analog.com/static/imported-files/tech_docs/dsp_book_Ch31.pdf
+		//wikipedia has the complex formula that's why*/
 		double[] result = new double[numBins];
 		
 		for (int i = 0; i < numBins; i++)
@@ -77,13 +50,7 @@ public class SequentialDiscreteFT extends Transformer
 				real += datas[startPos + j] * Math.cos(2 * Math.PI * i * j / numBins);
 				imag += -datas[startPos + j] * Math.sin(2 * Math.PI * i * j / numBins);
 			}
-			/*real *= (2/numBins);
-			imag *= -(2/numBins);
 			
-			//http://www.analog.com/static/imported-files/tech_docs/dsp_book_Ch31.pdf
-			//wikipedia has the complex formula that's why*/
-			
-			//actually not needed
 			result[i] = Math.pow(Math.pow(real, (double)2) + Math.pow(imag, 2), (double).5);
 		}
 		
