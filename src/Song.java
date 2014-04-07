@@ -47,7 +47,7 @@ public class Song
 		}
 		catch (IOException|WavFileException e)
 		{
-			throw new Exception("Exception when importing WAV file\n");
+			throw new Exception ("Song: " + e.getMessage());
 		}
 	}
 	
