@@ -34,8 +34,8 @@ public class ParallelDiscreteFT extends SequentialDiscreteFT
 				
 				// TODO: Monitor the threadQueues and put the data into the main queue in order until all data is through
 				
-				for (int j = 0; i < NUM_PROCS; i++)
-					thread[i].join();
+				for (int j = 0; j < NUM_PROCS; j++)
+					thread[j].join();
 			}
 		}
 		catch (Exception e)
