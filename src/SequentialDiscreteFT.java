@@ -24,7 +24,7 @@ public class SequentialDiscreteFT extends Transformer
 	@Override
 	public void run()
 	{
-		for (int i = startPos; i < datas.length; i += incSize)
+		for (int i = startPos; i + numBins < datas.length; i += incSize)
 		{
 			double[] data;
 			
