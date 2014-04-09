@@ -30,8 +30,19 @@ public class ParallelDiscreteFT extends SequentialDiscreteFT
 				thread[i] = new Thread(sequentialDiscreteFT[i]);
 				thread[i].start();
 			}
-			// TODO: Monitor the threadQueues and put the data into the main queue in order until all data is through
-			
+
+			for (int i = 0; i + numBins < datas.length; i += incSize)
+			{
+				double[] data = null;
+
+				do
+				{
+					data = threadQueues.get((i / incSize) % NUM_PROCS).poll();
+				} while (data == null);
+
+				while (!queue.offer(data));
+			}
+
 			for (int i = 0; i < NUM_PROCS; i++)
 				thread[i].join();
 		}
