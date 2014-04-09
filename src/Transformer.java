@@ -1,7 +1,4 @@
 import java.util.Queue;
-import java.util.ArrayList;
-import java.util.concurrent.ConcurrentLinkedDeque;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 public abstract class Transformer implements Runnable
 {

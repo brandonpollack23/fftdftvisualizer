@@ -16,7 +16,7 @@ public class Visualizer extends Frame implements Runnable {
 	
 	// Time constants.
 	public final short ONE_SIXTIETH_SECOND = 17;
-	public final short TIME_OUT = 30;
+	public final short TIME_OUT = 200;
 	
 	// States and attributes.
 	private final int N;
@@ -42,7 +42,7 @@ public class Visualizer extends Frame implements Runnable {
 				imagegraphics.setColor(Color.ORANGE);
 				for(int i=0; i<presentamplitudes.length; i++)
 				{
-					imagegraphics.drawLine(i + DISPLAY_START_X, DISPLAY_START_Y - (int)presentamplitudes[i], i + DISPLAY_START_X, DISPLAY_START_Y);
+					imagegraphics.drawLine(i + DISPLAY_START_X, DISPLAY_START_Y - (int)presentamplitudes[i]/3, i + DISPLAY_START_X, DISPLAY_START_Y);
 				}	
 			}
 			
@@ -84,29 +84,16 @@ public class Visualizer extends Frame implements Runnable {
 	{
 		while(true)
 		{
-			// Lock access to queue.
-			synchronized(amplitudes)
+			long starttime = System.currentTimeMillis();
+			while(amplitudes.isEmpty())
 			{
-				while(amplitudes.isEmpty())
+				if(System.currentTimeMillis() - starttime > TIME_OUT)
 				{
-					try 
-					{
-						long start = System.currentTimeMillis();
-						amplitudes.wait(2*TIME_OUT);
-						// Self-terminate mechanism.
-						if(System.currentTimeMillis() - start > TIME_OUT)
-						{
-							this.dispose();
-							return;
-						}
-					} 
-					catch(InterruptedException e)
-					{
-					}
+					this.dispose();
+					return;
 				}
-				// Obtain the preset array of amplitudes.
-				presentamplitudes = amplitudes.poll();					
 			}
+			presentamplitudes = amplitudes.poll();
 			
 			// Repaint the amplitude bars.
 			repaint();

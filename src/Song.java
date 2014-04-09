@@ -1,7 +1,12 @@
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+
+import WavFile.WavFile;
+import WavFile.WavFileException;
+
 // TODO: Actually test this code
-import java.io.*;
-import java.util.*;
-import WavFile.*;
+
 
 public class Song
 {
@@ -45,7 +50,11 @@ public class Song
 
 			wav.close();
 		}
-		catch (IOException|WavFileException e)
+		catch (IOException e)
+		{
+			throw new Exception ("Song: " + e.getMessage());
+		}
+		catch (WavFileException e)
 		{
 			throw new Exception ("Song: " + e.getMessage());
 		}

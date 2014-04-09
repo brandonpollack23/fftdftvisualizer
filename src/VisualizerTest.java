@@ -1,5 +1,4 @@
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 // Pseudo-thread.
 public class VisualizerTest
@@ -10,7 +9,7 @@ public class VisualizerTest
 	{	
 		// Main global variables.
 		int N = 1024;
-		Queue<double[]> amplitudes = new LinkedList<double[]>();
+		ConcurrentLinkedQueue<double[]> amplitudes = new ConcurrentLinkedQueue<double[]>();
 		
 		// Start visualizer thread.
 		Visualizer visualizer = new Visualizer(amplitudes, N);
@@ -23,13 +22,10 @@ public class VisualizerTest
 			double[] array = new double[N];
 			for(int j=0; j<N; j++)
 			{
-				array[j] = Math.random()*401;
+				array[j] = Math.random()*1201;
 			}
-			synchronized(amplitudes)
-			{
-				amplitudes.add(array);
-				amplitudes.notifyAll();
-			}
+			
+			amplitudes.add(array);
 		}
 		
 		// Main cleaning code.

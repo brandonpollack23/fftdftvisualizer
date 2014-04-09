@@ -1,5 +1,5 @@
 import java.io.File;
-import java.util.concurrent.*;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class Main
 {
