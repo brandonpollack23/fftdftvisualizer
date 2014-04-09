@@ -13,6 +13,7 @@ public class Visualizer extends Frame implements Runnable {
 	public final short DISPLAY_START_Y = 550;
 	public final short WINDOW_WIDTH;
 	public final short WINDOW_HEIGHT = 600;
+	public final int MAX_BAR_HEIGHT = 500;
 	
 	// Time constants.
 	public final short ONE_SIXTIETH_SECOND = 17;
@@ -40,9 +41,12 @@ public class Visualizer extends Frame implements Runnable {
 			if(presentamplitudes != null)
 			{
 				imagegraphics.setColor(Color.ORANGE);
-				for(int i=0; i<presentamplitudes.length; i++)
+				
+				double scale = (MAX_BAR_HEIGHT/presentamplitudes[0]);
+				
+				for(int i=1; i<presentamplitudes.length; i++)
 				{
-					imagegraphics.drawLine(i + DISPLAY_START_X, DISPLAY_START_Y - (int)presentamplitudes[i]/3, i + DISPLAY_START_X, DISPLAY_START_Y);
+					imagegraphics.drawLine(i + DISPLAY_START_X, DISPLAY_START_Y - (int)(presentamplitudes[i]*scale), i + DISPLAY_START_X, DISPLAY_START_Y);
 				}	
 			}
 			
