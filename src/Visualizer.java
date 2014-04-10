@@ -10,10 +10,10 @@ public class Visualizer extends Frame implements Runnable {
 	
 	// Graphics constants.
 	public final short DISPLAY_START_X = 12;
-	public final short DISPLAY_START_Y = 550;
+	public final short DISPLAY_START_Y = 250;
 	public final short WINDOW_WIDTH;
-	public final short WINDOW_HEIGHT = 600;
-	public final int MAX_BAR_HEIGHT = 500;
+	public final short WINDOW_HEIGHT = 300;
+	public final int MAX_BAR_HEIGHT = 300;
 	
 	// Time constants.
 	public final short ONE_SIXTIETH_SECOND = 17;
@@ -42,9 +42,16 @@ public class Visualizer extends Frame implements Runnable {
 			{
 				imagegraphics.setColor(Color.ORANGE);
 				
-				double scale = (MAX_BAR_HEIGHT/presentamplitudes[0]);
+				double max = 0;
 				
-				for(int i=1; i<presentamplitudes.length; i++)
+				for(int i = 1; i < presentamplitudes.length/2; i++)
+				{
+					if(presentamplitudes[i] > max) max = presentamplitudes[i];
+				}
+				
+				double scale = (MAX_BAR_HEIGHT/max);
+				
+				for(int i=1; i<presentamplitudes.length/2; i++)
 				{
 					imagegraphics.drawLine(i + DISPLAY_START_X, DISPLAY_START_Y - (int)(presentamplitudes[i]*scale), i + DISPLAY_START_X, DISPLAY_START_Y);
 				}	
@@ -65,14 +72,14 @@ public class Visualizer extends Frame implements Runnable {
 	
 	
 	// Constructor.
-	public Visualizer(Queue<double[]> amplitudes ,int N)
+	public Visualizer(Queue<double[]> amplitudes ,int N) //N is number of bins
 	{
 		super("Visualizer");
 		
 		this.amplitudes = amplitudes;
 		this.N = N;
 		
-		WINDOW_WIDTH = (short) (2*DISPLAY_START_X + this.N);
+		WINDOW_WIDTH = (short) (2*DISPLAY_START_X + this.N/2); //only display half (data is mirrored in Fourier transforms)
 		
 		setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 		setVisible(true);
